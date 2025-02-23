@@ -325,34 +325,53 @@ public class Map {
         switch (currentLoc) {
             case "Room 1":
                 roomIndex = 0;
-                println("You are in Room 1 - English");
-                System.out.println("The words you know reflect the world you see. Every correct answer sharpens your tongue and mind.\n");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("You are in Room 1 - English");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("The words you know reflect the world you see. Every correct answer sharpens your tongue and mind.");
+                System.out.println(HORIZONTAL_LINE1 + ("\n"));
                 break;
             case "Room 2":
                 roomIndex = 1;
-                println("You are in Room 2 - Math");
-                println("Numbers dance in your head. Equations and formulas guide your logic and structure.\n");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("You are in Room 2 - Math");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("Numbers dance in your head. Equations and formulas guide your logic and structure.");
+                System.out.println(HORIZONTAL_LINE1 + ("\n"));
                 break;
             case "Room 3":
                 roomIndex = 2;
-                println("You are in Room 3 - Filipino");
-                println("Your roots whisper their strength. Language is more than words — it’s identity and culture.\n");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("You are in Room 3 - Filipino");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("Your roots whisper their strength. Language is more than words — it’s identity and culture.");
+                System.out.println(HORIZONTAL_LINE1 + ("\n"));
                 break;
             case "Room 4":
                 roomIndex = 3;
-                println("You are in Room 4 - Logical Thinking");
-                println("Puzzles unfold before you. Every solved riddle adds another brick to the foundation of your reasoning.\n");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("You are in Room 4 - Logical Thinking");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("Puzzles unfold before you. Every solved riddle adds another brick to the foundation of your reasoning.");
+                System.out.println(HORIZONTAL_LINE1 + ("\n"));
                 break;
             case "Room 5":
                 roomIndex = 4;
-                println("You are in Room 5 - Ethics % Decision-Making");
-                println("Integrity shapes your path. With every just decision, you carve a road of honor.\n");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("You are in Room 5 - Ethics % Decision-Making");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("Integrity shapes your path. With every just decision, you carve a road of honor.");
+                System.out.println(HORIZONTAL_LINE1 + ("\n"));
                 break;
             case "Intersection 1":
-                System.out.println("You are in an intersection. No question here.");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("You are in an intersection. No question here.");
+                System.out.println(HORIZONTAL_LINE1);
                 return;
             case "Intersection 2":
-                System.out.println("You are in an intersection. No question here.");
+                System.out.println(HORIZONTAL_LINE1);
+                printCenter("You are in an intersection. No question here.");
+                System.out.println(HORIZONTAL_LINE1);
                 return;
             default:
                 System.out.println("Invalid location.");
@@ -363,12 +382,43 @@ public class Map {
             println("You have already completed the exam in " + currentLoc + ".");
             return;
         }
+        System.out.println();
+        System.out.println();
+        System.out.println(HORIZONTAL_LINE2);
+        printCenter("███████ ███    ██ ████████ ██████   █████  ███    ██  ██████ ███████     ███████ ██   ██  █████  ███    ███");
+        printCenter("██      ████   ██    ██    ██   ██ ██   ██ ████   ██ ██      ██          ██       ██ ██  ██   ██ ████  ████");
+        printCenter("█████   ██ ██  ██    ██    ██████  ███████ ██ ██  ██ ██      █████       █████     ███   ███████ ██ ████ ██");
+        printCenter("██      ██  ██ ██    ██    ██   ██ ██   ██ ██  ██ ██ ██      ██          ██       ██ ██  ██   ██ ██  ██  ██");
+        printCenter("███████ ██   ████    ██    ██   ██ ██   ██ ██   ████  ██████ ███████     ███████ ██   ██ ██   ██ ██      ██");
+        System.out.println(HORIZONTAL_LINE2);
+        printCenter("Read the question Carefully. And choose the correct answer." );
+
+
     
-        int score = 0;
+      int score = 0;
+        System.out.println(HORIZONTAL_LINE2);
+
         for (int i = 0; i < 5; i++) {
-            System.out.println(questions[roomIndex][i]);
-            System.out.print("Your answer: ");
-            char answer = scan.next().toUpperCase().charAt(0);
+        String roomquestions = questions[roomIndex][i];
+        String[] parts = roomquestions.split("\n");
+        // For the question line
+        // Print the question line centered
+        String question = String.format("%d: %s", (i + 1), parts[0]);
+        int questionPadding = (PAGE_WIDTH2 - question.length() - 0) / 2;
+        System.out.printf("|%" + questionPadding + "s%s%" + (PAGE_WIDTH2  - question.length() - questionPadding - 2) + "s|\n", "", question, "");
+
+        // Print the choices centered
+        for (int j = 1; j < parts.length; j++) {
+        String choice = parts[j]; // Example: "A) Square"
+        int choicePadding = (PAGE_WIDTH2 - choice.length() - 0) / 2;
+        System.out.printf("|%" + choicePadding + "s%s%" + (PAGE_WIDTH2 - choice.length() - choicePadding - 2) + "s|\n", "", choice, "");
+        }  
+        String prompt = "Your answer: ";
+        int padding = (PAGE_WIDTH2 - prompt.length()) / 2; // Calculate center padding
+        System.out.print("|" + " ".repeat(padding) + prompt);
+        char answer = scan.next().toUpperCase().charAt(0);
+
+        System.out.println(EMPTY_LINE2);
             if (answer == answers[roomIndex][i]) {
                 score++;
             }
@@ -850,7 +900,8 @@ public class Map {
                 System.out.println( HORIZONTAL_LINE);
                 System.out.printf("| %-30s |\n", " ENGINEERING ENTRANCE EXAM "); 
                 System.out.println( HORIZONTAL_LINE); 
-                System.out.println(EMPTY_LINE);  
+                printCentered("Read the question Carefully. And choose the correct answer."); 
+
 
 
                 String[][] questions = {
@@ -915,7 +966,7 @@ public class Map {
                         score++;
                     }
                 }
-
+                System.out.println(HORIZONTAL_LINE);
                 displayExamResults(score, totalQuestions, null, null);
                 return score;
             }
@@ -953,12 +1004,23 @@ public class Map {
                 paddedText += " ".repeat(PAGE_WIDTH - paddedText.length() - 1) + "|";
                 System.out.println(paddedText);
             }
+    static void printCenter(String text) {
+                int Page_width= 120;
+                int padding = (Page_width - text.length() - 2) / 2;
+                String paddedText = "║" + " ".repeat(padding) + text;
+                paddedText += " ".repeat(Page_width - paddedText.length() - 1) + "║";
+                System.out.println(paddedText);
+            }
    
         
             private static final int PAGE_WIDTH = 175;
             private static final String HORIZONTAL_LINE = "+" + "=".repeat(PAGE_WIDTH - 2) + "+";
             private static final String EMPTY_LINE = "|" + " ".repeat(PAGE_WIDTH - 2) + "|";
-        
+            private static final int PAGE_WIDTH2 = 120;
+            private static final String HORIZONTAL_LINE1 = "═" + "═".repeat(PAGE_WIDTH2 - 1) ;
+            private static final String HORIZONTAL_LINE2 = "+" + "=".repeat(PAGE_WIDTH2- 1) + "+";
+            private static final String EMPTY_LINE2 = "|" + " ".repeat(PAGE_WIDTH2 - 2) + "|";
+           
             static void BoardExam() {
                 Scanner scan = new Scanner(System.in);
         
