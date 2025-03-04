@@ -157,10 +157,11 @@ public class Map {
         printCenter("╠══════════════════════════════════╣");
         printCenter("║  Enter Username:                 ║");
         printCenter("╚══════════════════════════════════╝");
-        printCenter("> "); // Input prompt
         scan.nextLine(); // Consume the newline character
-        String username = scan.nextLine();
-       
+        String username = (" > ");
+        int padding = (PAGE_WIDTH2 - 9) / 2; // Calculate center padding
+        System.out.print("║" + " ".repeat(padding) + username);
+        username = scan.nextLine();
 
         printCenter("╔══════════════════════════════════╗");
         printCenter("║  " + username + ", Welcome to the game!  ║");
@@ -183,7 +184,10 @@ public class Map {
                 printCenter("║  3. About          ║");
                 printCenter("╚════════════════════╝");
                 printCenter("Choose key to proceed:");
+                int padding = (PAGE_WIDTH2 - 4) / 2; 
+                System.out.print("║" + " ".repeat(padding));
                 int choice = scan.nextInt();
+                
     
                 switch (choice) {
                     case 1:
@@ -282,8 +286,12 @@ public class Map {
             printCenter("║                      6. Agriculture                                      ║");
             printCenter("║                      7. Fisheries                                        ║");
             printCenter("╚══════════════════════════════════════════════════════════════════════════╝");
-    
+
+            int padding = (PAGE_WIDTH2 - 40) / 2; 
+            System.out.print("║" + " ".repeat(padding));
             selectedCourses[0] = getCourseSelection(scan, "> Enter your second choice: ");
+            int padding = (PAGE_WIDTH2 - 40) / 2;
+            System.out.print("║" + " ".repeat(padding));
             selectedCourses[1] = getCourseSelection(scan, "> Enter your third choice: ");
     
             printCenter("╔══════════════════════════════════════════════════════════════════════════╗");
