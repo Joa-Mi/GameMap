@@ -184,21 +184,18 @@ public class Monkey {
             }
         }
 
-        // Display hands
+       // Display hands    
         System.out.println("\nHuman Player's Hand:");
-        for (String card : humanHand) {
-            System.out.print(card + " ");
-        }
-        System.out.println("\n");
-
+            printPlayerHand(humanHand, true);
+        
         // Display bot hands
         for (int b = 0; b < 4; b++) {
             System.out.println("Bot " + (b + 1) + "'s Hand:");
-            for (String card : botHands[b]) {
-                System.out.print(card + " ");
-            }
-            System.out.println("\n");
+            printPlayerHand(botHands[b], false);
         }
+        // Final line break for spacing
+        System.out.println();
+
 
         // Hidden card remains secret
         System.out.println("A card is hidden for game mechanics.");
@@ -248,7 +245,7 @@ public class Monkey {
         if (hasDuplicates) {
             System.out.print("Duplicate cards found: ");
             for (int i = 0; i < duplicateIndex; i++) {
-            System.out.print(duplicates[i] + " ");
+             System.out.print(getCardASCII(duplicates[i]) + " ");
             }
             System.out.println();
         } else {
@@ -293,18 +290,266 @@ public class Monkey {
 
         // Display remaining cards for each player
         System.out.println("\nHuman Player's Hand after removing duplicates:");
-        for (String card : humanHand) {
-            System.out.print(card + " ");
-        }
+         printPlayerHand(humanHand, true);
+        
         System.out.println("\n");
 
         for (int b = 0; b < botHands.length; b++) {
             System.out.println("Bot " + (b + 1) + "'s Hand after removing duplicates:");
-            for (String card : botHands[b]) {
-            System.out.print(card + " ");
-            }
+            printPlayerHand(botHands[b], false);
             System.out.println("\n");
+        }
+        int firstPlayer = runCoinFlipGame();
+        
+        if (firstPlayer == 0) {
+            System.out.println("You go first in the Monkey Card Game!");
+        } else {
+            System.out.println("Monkey " + firstPlayer + " goes first in the Monkey Card Game!");
         }
 
     }
+      // Print player hands in horizontal format
+    static void printPlayerHand(String[] hand, boolean reveal) {
+        if (hand.length == 0) {
+            System.out.println("No cards left.");
+            return;
+        }
+
+        String[][] cardLines = new String[hand.length][7];
+
+        for (int i = 0; i < hand.length; i++) {
+            cardLines[i] = reveal ? getCardASCII(hand[i]).split("\n") : backCard();
+        }
+
+        // Print each row of all cards side by side
+        for (int line = 0; line < 7; line++) {
+            for (int i = 0; i < hand.length; i++) {
+                System.out.print(cardLines[i][line] + "  ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+    static String getCardASCII(String card) {
+        String rank = card.substring(0, card.length() - 1); // Extract rank (e.g., "A" from "A♠")
+        String suit = card.substring(card.length() - 1); // Extract suit (e.g., "♠" from "A♠")
+        
+        // Padding for ranks to ensure proper alignment
+        String paddedRank = rank.length() == 1 ? rank + " " : rank;
+        
+        return String.format(
+            "┌───────┐\n" +
+            "│ %s    │\n" +
+            "│       │\n" +
+            "│   %s   │\n" +
+            "│       │\n" +
+            "│    %s │\n" +
+            "└───────┘", 
+            paddedRank, suit, paddedRank);
+    }
+    static String[] backCard() {
+        String cardASCII = 
+            "┌───────┐\n" +
+            "│░░░░░░░│\n" +
+            "│░░░░░░░│\n" +
+            "│░░░░░░░│\n" +
+            "│░░░░░░░│\n" +
+            "│░░░░░░░│\n" +
+            "└───────┘";
+        
+        return cardASCII.split("\n");
+    }
+    
+ static String getSuitName(String suit) {
+        switch (suit) {
+            case "♣": return "Clubs";
+            case "♦": return "Diamonds";
+            case "♥": return "Hearts";
+            case "♠": return "Spades";
+            default: return "";
+        }
+    }
+
+
+public static int runCoinFlipGame() {
+    int userChoice;
+    int[] botChoices = new int[3];
+    boolean validSelection;
+    
+    do {
+        System.out.println("╔══════════════════════════════╗");
+        System.out.println("║       COIN FLIP GAME         ║");
+        System.out.println("╚══════════════════════════════╝");
+        System.out.println("Choose: 0 for Heads | 1 for Tails");
+        
+        // Get user choice
+        do {
+            System.out.print("Your choice (0 or 1): ");
+            userChoice = scanner.nextInt();
+        } while (userChoice != 0 && userChoice != 1);
+        
+        // Bots make random choices
+        for (int i = 0; i < 3; i++) {
+            botChoices[i] = random.nextInt(2);
+        }
+        
+        // Check if all players made the same choice
+        validSelection = !(userChoice == botChoices[0] && userChoice == botChoices[1] && userChoice == botChoices[2]);
+        
+        if (!validSelection) {
+            System.out.println("All players chose the same! Re-selecting choices...");
+        }
+    } while (!validSelection);
+    
+    System.out.println("You chose: " + (userChoice == 0 ? "HEADS" : "TAILS"));
+    for (int i = 0; i < 3; i++) {
+        System.out.println("Bot " + (i + 1) + " chose: " + (botChoices[i] == 0 ? "HEADS" : "TAILS"));
+    }
+    
+    int round = 1;
+    int[] players = {userChoice, botChoices[0], botChoices[1], botChoices[2]};
+    boolean[] stillInGame = {true, true, true, true};
+    String[] playerNames = {"You", "Bot 1", "Bot 2", "Bot 3"};
+    
+    while (true) {
+        System.out.println("\n═══════════════════════════");
+        System.out.println("       ROUND " + round);
+        System.out.println("═══════════════════════════");
+        
+        // Allow players to choose again if it's round 2
+        if (round > 1) {
+            System.out.println("\nSecond round - new choices!");
+            
+            boolean allSame;
+        do {
+            allSame = true;
+            
+            // Get user's new choice if still in game
+            if (stillInGame[0]) {
+                do {
+                    System.out.print("Your new choice (0 for Heads, 1 for Tails): ");
+                    userChoice = scanner.nextInt();
+                } while (userChoice != 0 && userChoice != 1);
+                players[0] = userChoice;
+            }
+
+            // Bots make new random choices if still in game
+            for (int i = 0; i < 3; i++) {
+                if (stillInGame[i+1]) {
+                    botChoices[i] = random.nextInt(2);
+                    players[i+1] = botChoices[i];
+                }
+            }
+
+            // Check if all remaining players picked the same option
+            int firstChoice = -1;
+            for (int i = 0; i < players.length; i++) {
+                if (stillInGame[i]) {
+                    if (firstChoice == -1) {
+                        firstChoice = players[i];
+                    } else if (players[i] != firstChoice) {
+                        allSame = false;
+                        break;
+                    }
+                }
+            }
+
+            if (allSame) {
+                System.out.println("\nAll remaining players picked the same! Re-selecting choices...");
+            }
+
+        } while (allSame);
+        
+        System.out.println("\nChoices confirmed:");
+        for (int i = 0; i < 4; i++) {
+            if (stillInGame[i]) {
+                System.out.println("• " + playerNames[i] + " chose: " + (players[i] == 0 ? "HEADS" : "TAILS"));
+            }
+        }
+            System.out.println("\nPress Enter to flip the coin...");
+            scanner.nextLine(); // Consume potential leftover newline
+            scanner.nextLine(); // Wait for player to press enter
+        }
+        
+        int coinResult = flipCoinAnimation();
+        System.out.println("\nCoin showed: " + (coinResult == 0 ? "HEADS" : "TAILS"));
+        
+        // Display who's still in before eliminations
+        System.out.println("\nPlayers still in the game:");
+        for (int i = 0; i < players.length; i++) {
+            if (stillInGame[i]) {
+                System.out.println("• " + playerNames[i] + " (" + (players[i] == 0 ? "HEADS" : "TAILS") + ")");
+            }
+        }
+        
+        // Eliminate players with wrong choice
+        System.out.println("\nResults:");
+        int remainingPlayers = 0;
+        for (int i = 0; i < players.length; i++) {
+            if (stillInGame[i]) {
+                if (players[i] != coinResult) {
+                    stillInGame[i] = false;
+                    System.out.println("✗ " + playerNames[i] + " is eliminated");
+                } else {
+                    System.out.println("✓ " + playerNames[i] + " stays in the game");
+                    remainingPlayers++;
+                }
+            }
+        }
+        
+        // Stop the game when only one player remains
+        if (remainingPlayers == 1) break;
+           // If everyone is eliminated, reset for a new round
+    if (remainingPlayers == 0) {
+        System.out.println("\nAll players eliminated! Everyone returns for the next round.");
+        for (int i = 0; i < stillInGame.length; i++) {
+            stillInGame[i] = true;
+        }
+    }
+
+    round++;
+    System.out.println("\nPress Enter to continue...");
+    scanner.nextLine(); // Wait for player to press enter
 }
+
+// Determine the winner
+System.out.println("\n╔══════════════════════════════╗");
+System.out.println("║        GAME RESULT           ║");
+System.out.println("╚══════════════════════════════╝");
+
+for (int i = 0; i < players.length; i++) {
+    if (stillInGame[i]) {
+        System.out.println("🏆 " + playerNames[i] + " won the coin flip!");
+        return i;
+    }
+}
+return -1;
+}
+
+   
+
+public static int flipCoinAnimation() {
+    String[] coinFrames = {
+        "    ___________\n   /           \\\n  /   HEADS     \\\n |   ⊙     ⊙     |\n |       ◡       |\n  \\             /\n   \\___________/",
+        "        ▄▄▄\n      ▄█████▄\n    ▄███████▄\n    ▀█████▀\n      ▀▀▀",
+        "    ___________\n   /           \\\n  /   TAILS     \\\n |    ◠   ◠      |\n |      ▿        |\n  \\             /\n   \\___________/",
+        "      ▄▄▄\n    ▄█████▄\n  ▄███████▄\n  ▀█████▀\n    ▀▀▀"
+    };
+    
+    for (int i = 0; i < 12; i++) {
+        System.out.println(coinFrames[i % coinFrames.length]);
+        try {
+            Thread.sleep(100 + (i * 15));
+        } catch (InterruptedException e) {}
+        System.out.println("\n");
+    }
+    
+    int result = random.nextInt(2);
+    System.out.println(result == 0 ? coinFrames[0] : coinFrames[2]);
+    return result;
+}
+
+}
+
+    
+
