@@ -367,7 +367,7 @@ public class Monkey {
 
         for (int b = 0; b < botHands.length; b++) {
             System.out.println("Bot " + (b + 1) + "'s Hand after removing duplicates:");
-            printCard(botHands[b], true); // turn true to see the card false to not
+            printCard(botHands[b], false); // turn true to see the card false to not
             System.out.println("\n");
         }
 
