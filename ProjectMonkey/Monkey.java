@@ -361,7 +361,6 @@ public class Monkey {
 
         // Display remaining cards for each player
         System.out.println("\nHuman Player's Hand after removing duplicates:");
-        for (String card : humanHand) {
             printCard(humanHand, true);
 
 
@@ -432,7 +431,7 @@ public class Monkey {
         }
 
     }
- }
+ 
      // Dice rolling animation
      private static int rollDiceWithAnimation(Random random) throws InterruptedException {
         String[] diceFaces = {
