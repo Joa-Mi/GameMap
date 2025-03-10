@@ -313,7 +313,55 @@ public class Monkey {
         // Display the chosen card in ASCII art
         System.out.println(getCardASCII(chosenCard));
 
+        String[] newDeck = new String[deck.length - 1];
+        int index = 0;
+
+        for (String card : deck) {
+            if (!card.equals(chosenCard)) {
+                newDeck[index++] = card;
+            }
+        }
+
+        deck = newDeck; 
+
         System.out.println("The Deck after removing the chosen card:");
+       // Display cards by suit in a more organized way
+        for (String suit : SUITS) {
+             System.out.println("\n=== " + suit + " (" + getSuitName(suit) + ") ===");
+    
+        // Count how many cards of this suit are in the new deck
+        int suitCardCount = 0;
+            for (String card : newDeck) {
+                if (card.endsWith(suit)) {
+                     suitCardCount++;
+                }
+            }
+    
+                 // Create an array to hold all cards of current suit in the new deck
+            String[] suitCards = new String[suitCardCount];
+            int suitIndex = 0;
+            for (String card : newDeck) {
+                if (card.endsWith(suit)) {
+                    suitCards[suitIndex++] = card;
+                }
+             }
+    
+             // Print cards in rows of 4 at a time for readability
+            int cardsPerRow = 13;
+            for (int i = 0; i < suitCards.length; i += cardsPerRow) {
+             // Calculate how many cards to print in this row
+            int cardsInThisRow = Math.min(cardsPerRow, suitCards.length - i);
+        
+            // Create array for this row of cards
+            String[] rowCards = new String[cardsInThisRow];
+                for (int j = 0; j < cardsInThisRow; j++) {
+                    rowCards[j] = suitCards[i + j];
+                }
+        
+                // Print this row of cards
+            printCard(rowCards, true);
+            }
+        }
         
         
         System.out.println("Enter any key to shuffle the cards:");
@@ -410,6 +458,7 @@ public class Monkey {
         if (humanDuplicates.length > 0) {
             System.out.print("Human Player has found duplicate cards: ");
             System.out.println(Arrays.toString(humanDuplicates));
+            printCard(humanDuplicates, true);
         } else {
             System.out.println("Human Player has no duplicate cards.");
         }
@@ -420,6 +469,7 @@ public class Monkey {
             if (botDuplicates.length > 0) {
                 System.out.print("Bot " + (b + 1) + " has found duplicate cards: ");
                 System.out.println(Arrays.toString(botDuplicates));
+                printCard(botDuplicates, true);
             } else {
                 System.out.println("Bot " + (b + 1) + " has no duplicate cards.");
             }
