@@ -361,7 +361,7 @@ public class Monkey {
         // Display bot hands
         for (int b = 0; b < 4; b++) {
             System.out.println("Bot " + (b + 1) + "'s Hand:");
-            printCard(botHands[b], false);
+            printCard(botHands[b], false); // ⛔ False - backcard
             System.out.println("\n");
         }
 
@@ -417,7 +417,7 @@ public class Monkey {
 
         for (int b = 0; b < botHands.length; b++) {
             System.out.println("Bot " + (b + 1) + "'s Hand after removing duplicates:");
-            printCard(botHands[b], true);
+            printCard(botHands[b], true); //⛔ False - for backcard
             System.out.println("\n");
         }
         System.out.println("Enter any key to roll the dice to decide who picks first:");
@@ -543,10 +543,9 @@ public class Monkey {
                 
                 // Display both players' hands before picking
                 System.out.println("\nPicking Player: " + (currentPlayer == 0 ? "Human Player" : "Bot " + currentPlayer));
-                printCard(currentPlayer == 0 ? humanHand : botHands[currentPlayer - 1], true);
-                
+                printCard(currentPlayer == 0 ? humanHand : botHands[currentPlayer - 1], true); // ⛔ currentPlayer == 0 - for backcard
                 System.out.println("Opponent: " + (targetPlayer == 0 ? "Human Player" : "Bot " + targetPlayer));
-                printCard(targetPlayer == 0 ? humanHand : botHands[targetPlayer - 1], true);
+                printCard(targetPlayer == 0 ? humanHand : botHands[targetPlayer - 1], true); // ⛔ targetPlayer == 0 - for backcard
                 
                 if (currentPlayer == 0) {
                     // Human picks manually
@@ -585,7 +584,7 @@ public class Monkey {
                     printCard(humanHand, true);
                 } else {
                     botHands[currentPlayer - 1] = addCard(botHands[currentPlayer - 1], pickedCard);
-                    printCard(botHands[currentPlayer - 1], true);
+                    printCard(botHands[currentPlayer - 1], true);  // ⛔ False - backcard
                 }
                 
                 // Check for duplicate pairs based on both rank and suit
@@ -603,6 +602,7 @@ public class Monkey {
                 // Display message about duplicate
                 if (duplicateFound) {
                     System.out.println("Duplicate found: " + pickedCard + ". Both cards removed!");
+                    ystem.out.println(getCardASCII(pickedCard)); 
                 } else {
                     System.out.println("No duplicate found. " + pickedCard + " added to hand.");
                 }
