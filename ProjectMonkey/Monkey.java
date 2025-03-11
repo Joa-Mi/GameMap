@@ -699,6 +699,18 @@ public class Monkey {
                         int pickIndex = scanner.nextInt();
                         pickedCard = botHands[targetPlayer - 1][pickIndex];
                         botHands[targetPlayer - 1] = removeCard(botHands[targetPlayer - 1], pickIndex);
+                        
+                        // Check if the bot has finished their cards after the human picks
+                        if (botHands[targetPlayer - 1].length == 0) {
+                        announcePlayerFinish(targetPlayer);
+                        // Update the order to remove the finished bot
+                        order = removePlayerFromOrder(order, targetPlayer);
+                        activePlayers--;
+                        // Check if only one player remains
+                        if (activePlayers == 1) {
+                             break;
+                            }
+                        }
                     }
                 } else {
                     
